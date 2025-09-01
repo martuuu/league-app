@@ -3,9 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { calculateLeagueStats, isLeagueComplete } from "@/lib/stats-utils"
 import { Match, Player } from "@/lib/types"
-import confetti from "canvas-confetti"
 import { Flag, Trophy } from "lucide-react"
-import { useEffect } from "react"
 import LeagueTable from "./LeagueTable"
 import MatchSchedule from "./MatchSchedule"
 import PlayerStats from "./PlayerStats"
@@ -54,51 +52,6 @@ export default function LeagueView({
 }: LeagueViewProps) {
   const stats = calculateLeagueStats(players, matches)
   const leagueCompleted = isLeagueComplete(matches)
-
-  // Confetti effect when league completes without playoffs - only when actually completed
-  useEffect(() => {
-    // Only trigger confetti if no playoffs and league is actually completed with results
-    if (!hasPlayoffs && (leagueCompleted || manuallyFinished)) {
-      // Check if there are actual match results (not just empty league)
-      const hasMatchResults = matches.some(match => match.isCompleted && 
-        match.player1Goals !== null && match.player2Goals !== null)
-      
-      if (hasMatchResults && players.length > 0) {
-        // Small delay to ensure this runs after the league finishes
-        const timer = setTimeout(() => {
-          // Get the champion element to position confetti relative to it
-          // Try mobile first, then desktop
-          const championElement = document.getElementById('champion-section-mobile') || 
-                                  document.getElementById('champion-section')
-          if (championElement) {
-            const rect = championElement.getBoundingClientRect()
-            const leftX = rect.left / window.innerWidth
-            const rightX = rect.right / window.innerWidth
-            
-            const duration = 3000
-            const end = Date.now() + duration
-
-            const frame = () => {
-              confetti({
-                particleCount: 1,
-                angle: 160,
-                spread: 15,
-                origin: { x: leftX, y: 0.6 }
-              })
-  
-
-              if (Date.now() < end) {
-                requestAnimationFrame(frame)
-              }
-            }
-            frame()
-          }
-        }, 500) // Small delay to avoid triggering on page load
-
-        return () => clearTimeout(timer)
-      }
-    }
-  }, [hasPlayoffs, leagueCompleted, manuallyFinished, matches, players])
 
   return (
     <div className="max-w-7xl mx-auto p-4">

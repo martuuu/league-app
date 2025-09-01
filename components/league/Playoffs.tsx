@@ -4,9 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { isLeagueComplete } from "@/lib/stats-utils"
 import { Match, Player } from "@/lib/types"
-import confetti from "canvas-confetti"
 import { Play, Trophy } from "lucide-react"
-import { useEffect } from "react"
 
 interface PlayoffsProps {
   players: Player[]
@@ -36,53 +34,6 @@ export default function Playoffs({
   onSavePlayoffResults,
 }: PlayoffsProps) {
   const leagueCompleted = isLeagueComplete(matches) || manuallyFinished
-  
-  // Confetti effect when final is completed - only trigger when match becomes completed
-  useEffect(() => {
-    const final = playoffs.filter(match => match.round === "Final")
-    const isFinalCompleted = final.length > 0 && final.every(match => match.isCompleted)
-    
-    // Only trigger if there's a final match and it was just completed (not on initial load)
-    if (isFinalCompleted && playoffStarted && final.length > 0) {
-      // Check if final has actual results (not just initialized)
-      const finalMatch = final[0]
-      const hasRealResults = finalMatch.player1Goals !== null && finalMatch.player2Goals !== null
-      
-      if (hasRealResults) {
-        // Trigger confetti celebration
-        // Get the champion element to position confetti relative to it
-        const championElement = document.getElementById('playoffs-champion-section')
-        if (championElement) {
-          const rect = championElement.getBoundingClientRect()
-          const leftX = rect.left / window.innerWidth
-          const rightX = rect.right / window.innerWidth
-          
-          const duration = 3000
-          const end = Date.now() + duration
-
-          const frame = () => {
-            confetti({
-              particleCount: 3,
-              angle: 60,
-              spread: 55,
-              origin: { x: leftX, y: 0.6 }
-            })
-            confetti({
-              particleCount: 3,
-              angle: 120,
-              spread: 55,
-              origin: { x: rightX, y: 0.6 }
-            })
-
-            if (Date.now() < end) {
-              requestAnimationFrame(frame)
-            }
-          }
-          frame()
-        }
-      }
-    }
-  }, [playoffs, playoffStarted])
   
   const getPlayoffMatchesByRound = (round: string) => {
     return playoffs.filter(match => match.round === round)
@@ -345,7 +296,7 @@ export default function Playoffs({
             <div className="border border-border rounded-lg p-6">
               <Trophy className="h-8 w-8 mx-auto mb-2 text-primary" />
               <h2 className="text-xl font-bold mb-1">¡Campeón!</h2>
-              <p className="text-lg font-semibold text-primary">
+              <p className="text-lg font-semibold text-primary bg-primary/10 border border-primary/20 rounded px-3 py-2 inline-block">
                 {final[0].isCompleted && final[0].player1Goals !== null && final[0].player2Goals !== null && final[0].player1 && final[0].player2
                   ? (() => {
                       // Check if it's a draw and there's a penalty winner

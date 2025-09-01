@@ -412,10 +412,8 @@ export default function FifaLeague() {
               onProceedToTeams={proceedToTeamAssignment}
             />
             
-            {/* Global Stats Section - Moved to the end */}
-            {localStorage.savedLeagues.length > 0 && (
-              <GlobalStats leagues={localStorage.savedLeagues} />
-            )}
+            {/* Global Stats Section - Always shown */}
+            <GlobalStats leagues={localStorage.savedLeagues} />
           </div>
         </div>
       </div>
