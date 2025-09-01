@@ -373,16 +373,18 @@ export default function FifaLeague() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation currentView={currentView} onViewChange={setCurrentView} onCreateNewLeague={createNewLeague} />
-        <TeamAssignment
-          selectedPlayers={selectedPlayers}
-          playerTeams={playerTeams}
-          onTeamChange={handleTeamChange}
-          lockedPlayers={lockedPlayers}
-          onTogglePlayerLock={togglePlayerLock}
-          onShuffleTeams={shuffleTeams}
-          onBackToSetup={() => setStep("setup")}
-          onCreateLeague={createLeague}
-        />
+        <div className="max-w-7xl mx-auto p-4">
+          <TeamAssignment
+            selectedPlayers={selectedPlayers}
+            playerTeams={playerTeams}
+            onTeamChange={handleTeamChange}
+            lockedPlayers={lockedPlayers}
+            onTogglePlayerLock={togglePlayerLock}
+            onShuffleTeams={shuffleTeams}
+            onBackToSetup={() => setStep("setup")}
+            onCreateLeague={createLeague}
+          />
+        </div>
       </div>
     )
   }
@@ -391,28 +393,30 @@ export default function FifaLeague() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation currentView={currentView} onViewChange={setCurrentView} onCreateNewLeague={createNewLeague} />
-        <div className="container mx-auto px-4 py-8 space-y-8">
-          {/* League Setup */}
-          <LeagueSetup
-            playerCount={playerCount}
-            setPlayerCount={setPlayerCount}
-            selectedPlayers={selectedPlayers}
-            setSelectedPlayers={setSelectedPlayers}
-            availablePlayers={availablePlayers}
-            setAvailablePlayers={setAvailablePlayers}
-            isRoundTrip={isRoundTrip}
-            setIsRoundTrip={setIsRoundTrip}
-            hasPlayoffs={hasPlayoffs}
-            setHasPlayoffs={setHasPlayoffs}
-            playoffTeams={playoffTeams}
-            setPlayoffTeams={setPlayoffTeams}
-            onProceedToTeams={proceedToTeamAssignment}
-          />
-          
-          {/* Global Stats Section - Moved to the end */}
-          {localStorage.savedLeagues.length > 0 && (
-            <GlobalStats leagues={localStorage.savedLeagues} />
-          )}
+        <div className="max-w-7xl mx-auto p-4">
+          <div className="space-y-8">
+            {/* League Setup */}
+            <LeagueSetup
+              playerCount={playerCount}
+              setPlayerCount={setPlayerCount}
+              selectedPlayers={selectedPlayers}
+              setSelectedPlayers={setSelectedPlayers}
+              availablePlayers={availablePlayers}
+              setAvailablePlayers={setAvailablePlayers}
+              isRoundTrip={isRoundTrip}
+              setIsRoundTrip={setIsRoundTrip}
+              hasPlayoffs={hasPlayoffs}
+              setHasPlayoffs={setHasPlayoffs}
+              playoffTeams={playoffTeams}
+              setPlayoffTeams={setPlayoffTeams}
+              onProceedToTeams={proceedToTeamAssignment}
+            />
+            
+            {/* Global Stats Section - Moved to the end */}
+            {localStorage.savedLeagues.length > 0 && (
+              <GlobalStats leagues={localStorage.savedLeagues} />
+            )}
+          </div>
         </div>
       </div>
     )

@@ -66,28 +66,33 @@ export default function LeagueView({
       if (hasMatchResults && players.length > 0) {
         // Small delay to ensure this runs after the league finishes
         const timer = setTimeout(() => {
-          const duration = 3000
-          const end = Date.now() + duration
+          // Get the champion element to position confetti relative to it
+          // Try mobile first, then desktop
+          const championElement = document.getElementById('champion-section-mobile') || 
+                                  document.getElementById('champion-section')
+          if (championElement) {
+            const rect = championElement.getBoundingClientRect()
+            const leftX = rect.left / window.innerWidth
+            const rightX = rect.right / window.innerWidth
+            
+            const duration = 3000
+            const end = Date.now() + duration
 
-          const frame = () => {
-            confetti({
-              particleCount: 7,
-              angle: 60,
-              spread: 55,
-              origin: { x: 0 }
-            })
-            confetti({
-              particleCount: 7,
-              angle: 120,
-              spread: 55,
-              origin: { x: 1 }
-            })
+            const frame = () => {
+              confetti({
+                particleCount: 1,
+                angle: 160,
+                spread: 15,
+                origin: { x: leftX, y: 0.6 }
+              })
+  
 
-            if (Date.now() < end) {
-              requestAnimationFrame(frame)
+              if (Date.now() < end) {
+                requestAnimationFrame(frame)
+              }
             }
+            frame()
           }
-          frame()
         }, 500) // Small delay to avoid triggering on page load
 
         return () => clearTimeout(timer)
@@ -118,6 +123,29 @@ export default function LeagueView({
         <div className="flex-1 order-2 lg:order-2 space-y-6">
           <LeagueTable players={players} />
           
+          {/* Sección de Campeón en Mobile (cuando no hay playoffs) - Después de la tabla */}
+          {!hasPlayoffs && (leagueCompleted || manuallyFinished) && (
+            <div className="lg:hidden">
+              <div className="max-w-md mx-auto" id="champion-section-mobile">
+                <div className="text-center border border-border rounded-lg p-6">
+                  <Trophy className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
+                  <h2 className="text-2xl font-bold mb-2">¡Campeón de la Liga!</h2>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div className="text-lg font-bold text-yellow-800">
+                      {players[0]?.team || "Equipo"}
+                    </div>
+                    <div className="text-sm text-yellow-600 mb-2">
+                      {players[0]?.name || "Jugador"}
+                    </div>
+                    <div className="text-sm text-yellow-700">
+                      <strong>{players[0]?.points || 0}</strong> puntos
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {/* Botón para finalizar liga manualmente */}
           {!playoffStarted && !leagueCompleted && (
             <div className="text-center">
@@ -139,12 +167,30 @@ export default function LeagueView({
         </div>
       </div>
 
+      {/* Sección de Playoffs */}
+      {hasPlayoffs && (
+        <Playoffs
+          players={players}
+          matches={matches}
+          playoffs={playoffs}
+          tempResults={tempResults}
+          playoffStarted={playoffStarted}
+          playoffTeams={playoffTeams}
+          manuallyFinished={manuallyFinished}
+          onStartPlayoffs={onStartPlayoffs}
+          onTempResultChange={onTempResultChange}
+          onPenaltyWinnerSelect={onPenaltyWinnerSelect}
+          onSavePlayoffResults={onSavePlayoffResults}
+        />
+      )}
+
+      {/* PlayerStats al final en mobile, después de playoffs */}
       <PlayerStats stats={stats} className="lg:hidden mt-6" />
 
-      {/* Sección de Campeón (cuando no hay playoffs) */}
+      {/* Sección de Campeón Desktop (cuando no hay playoffs) */}
       {!hasPlayoffs && (leagueCompleted || manuallyFinished) && (
-        <div className="mt-6">
-          <div className="max-w-md mx-auto">
+        <div className="mt-6 hidden lg:block">
+          <div className="max-w-md mx-auto" id="champion-section">
             <div className="text-center border border-border rounded-lg p-6">
               <Trophy className="h-12 w-12 mx-auto mb-4 text-yellow-500" />
               <h2 className="text-2xl font-bold mb-2">¡Campeón de la Liga!</h2>
@@ -162,23 +208,6 @@ export default function LeagueView({
             </div>
           </div>
         </div>
-      )}
-
-      {/* Sección de Playoffs */}
-      {hasPlayoffs && (
-        <Playoffs
-          players={players}
-          matches={matches}
-          playoffs={playoffs}
-          tempResults={tempResults}
-          playoffStarted={playoffStarted}
-          playoffTeams={playoffTeams}
-          manuallyFinished={manuallyFinished}
-          onStartPlayoffs={onStartPlayoffs}
-          onTempResultChange={onTempResultChange}
-          onPenaltyWinnerSelect={onPenaltyWinnerSelect}
-          onSavePlayoffResults={onSavePlayoffResults}
-        />
       )}
     </div>
   )

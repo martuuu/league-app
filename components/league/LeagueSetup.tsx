@@ -64,7 +64,7 @@ export default function LeagueSetup({
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
+    <div className="space-y-6">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary flex items-center justify-center gap-2">
@@ -142,14 +142,14 @@ export default function LeagueSetup({
               Seleccionar jugadores ({selectedPlayers.length}/{playerCount})
             </label>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 mb-4">
               {availablePlayers.map((playerName) => (
                 <div key={playerName} className="relative">
                   <Button
                     variant={selectedPlayers.includes(playerName) ? "default" : "outline"}
                     size="sm"
                     onClick={() => togglePlayerSelection(playerName)}
-                    className="w-full justify-start"
+                    className="w-full justify-center text-xs px-2 py-1 h-8"
                     disabled={!selectedPlayers.includes(playerName) && selectedPlayers.length >= playerCount}
                   >
                     {playerName}
@@ -168,22 +168,25 @@ export default function LeagueSetup({
               ))}
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 max-w-sm">
               <Input
                 placeholder="Agregar jugador personalizado"
                 value={newPlayerName}
                 onChange={(e) => setNewPlayerName(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && addCustomPlayer()}
+                className="text-sm"
               />
-              <Button onClick={addCustomPlayer} variant="outline">
+              <Button onClick={addCustomPlayer} variant="outline" size="sm">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
-          <Button onClick={onProceedToTeams} className="w-full" size="lg">
-            Continuar
-          </Button>
+          <div className="flex justify-end">
+            <Button onClick={onProceedToTeams}>
+              Continuar
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

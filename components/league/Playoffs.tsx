@@ -50,28 +50,36 @@ export default function Playoffs({
       
       if (hasRealResults) {
         // Trigger confetti celebration
-        const duration = 3000
-        const end = Date.now() + duration
+        // Get the champion element to position confetti relative to it
+        const championElement = document.getElementById('playoffs-champion-section')
+        if (championElement) {
+          const rect = championElement.getBoundingClientRect()
+          const leftX = rect.left / window.innerWidth
+          const rightX = rect.right / window.innerWidth
+          
+          const duration = 3000
+          const end = Date.now() + duration
 
-        const frame = () => {
-          confetti({
-            particleCount: 7,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 }
-          })
-          confetti({
-            particleCount: 7,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 }
-          })
+          const frame = () => {
+            confetti({
+              particleCount: 3,
+              angle: 60,
+              spread: 55,
+              origin: { x: leftX, y: 0.6 }
+            })
+            confetti({
+              particleCount: 3,
+              angle: 120,
+              spread: 55,
+              origin: { x: rightX, y: 0.6 }
+            })
 
-          if (Date.now() < end) {
-            requestAnimationFrame(frame)
+            if (Date.now() < end) {
+              requestAnimationFrame(frame)
+            }
           }
+          frame()
         }
-        frame()
       }
     }
   }, [playoffs, playoffStarted])
@@ -333,7 +341,7 @@ export default function Playoffs({
 
         {/* Champion */}
         {isFinalCompleted && final.length > 0 && (
-          <div className="text-center">
+          <div className="text-center" id="playoffs-champion-section">
             <div className="border border-border rounded-lg p-6">
               <Trophy className="h-8 w-8 mx-auto mb-2 text-primary" />
               <h2 className="text-xl font-bold mb-1">¡Campeón!</h2>

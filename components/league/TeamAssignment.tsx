@@ -28,7 +28,7 @@ export default function TeamAssignment({
   onCreateLeague,
 }: TeamAssignmentProps) {
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-6">
+    <div className="space-y-6">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary flex items-center justify-center gap-2">
@@ -61,15 +61,15 @@ export default function TeamAssignment({
             </div>
           ))}
 
-          <div className="flex gap-2 pt-4">
-            <Button variant="outline" onClick={onBackToSetup} className="flex-1">
+          <div className="flex justify-end gap-2 pt-4">
+            <Button variant="outline" onClick={onBackToSetup}>
               Volver
             </Button>
-            <Button variant="outline" onClick={onShuffleTeams} className="flex-1 bg-transparent">
+            <Button variant="outline" onClick={onShuffleTeams} className="bg-transparent">
               <Shuffle className="h-4 w-4 mr-2" />
-              Sortear equipos seleccionados
+              Sortear equipos
             </Button>
-            <Button onClick={onCreateLeague} className="flex-1" size="lg">
+            <Button onClick={onCreateLeague}>
               Crear Liga
             </Button>
           </div>

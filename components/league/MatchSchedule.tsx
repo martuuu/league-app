@@ -125,8 +125,8 @@ export default function MatchSchedule({
           </div>
         </div>
 
-        <div className="mt-4 flex gap-2">
-          <Button onClick={onSaveResults} className="flex-1" disabled={leagueFinished}>
+        <div className="mt-4 flex justify-end">
+          <Button onClick={onSaveResults} disabled={leagueFinished}>
             Guardar Resultados
           </Button>
         </div>
