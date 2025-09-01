@@ -5,17 +5,24 @@ Una aplicación web para organizar ligas de fútbol entre amigos, desarrollada c
 ## 🚀 Características
 
 - **Gestión de Ligas**: Crea y administra ligas personalizadas
+- **Dashboard de Estadísticas**: Vista global de todas tus ligas con widgets informativos
 - **Configuración Flexible**: 
   - Selecciona jugadores predefinidos o agrega jugadores personalizados
   - Asigna equipos de fútbol a cada jugador
   - Opción de liga de ida y vuelta
-  - Sistema de playoffs opcional
+  - Sistema de playoffs opcional (2, 4, 6, 8 equipos)
 - **Seguimiento de Estadísticas**: 
   - Tabla de posiciones automática
   - Estadísticas detalladas por jugador
   - Histórial de partidos
+  - Hall of Fame con campeones
+- **Sistema de Playoffs Completo**:
+  - Brackets automáticos según número de equipos
+  - Soporte para penales en empates
+  - UI diferenciada para formato de 6 equipos
+  - Efectos visuales para finalizaciones
 - **Interfaz Moderna**: UI limpia y responsiva con componentes de shadcn/ui
-- **Persistencia Local**: Los datos se guardan en localStorage
+- **Persistencia Local**: Los datos se guardan en localStorage (migración a BD planeada)
 
 ## 🛠 Tecnologías
 
@@ -64,12 +71,12 @@ Una aplicación web para organizar ligas de fútbol entre amigos, desarrollada c
 
 ## 🎯 Próximas Características
 
-- [ ] Integración con Supabase para persistencia de datos
-- [ ] Sistema de usuarios (sin autenticación compleja)
-- [ ] Estadísticas avanzadas y gráficos
-- [ ] Historial de ligas anteriores
-- [ ] Export/Import de datos de liga
-- [ ] Sistema de notificaciones
+- [ ] **Sprint 3**: Integración con Supabase + Redux para persistencia de datos
+- [ ] **Sincronización en tiempo real** entre múltiples usuarios
+- [ ] **Sistema de usuarios** (sin autenticación compleja)
+- [ ] **Estadísticas avanzadas** y gráficos interactivos
+- [ ] **Exportar/Importar** datos de liga
+- [ ] **Notificaciones push** para actualizaciones
 
 ## 🏗 Arquitectura Planeada
 

@@ -1,5 +1,6 @@
 "use client"
 
+import GlobalStats from "@/components/league/GlobalStats"
 import LeagueSetup from "@/components/league/LeagueSetup"
 import LeagueView from "@/components/league/LeagueView"
 import Navigation from "@/components/league/Navigation"
@@ -232,7 +233,15 @@ export default function FifaLeague() {
         localStorage.saveLeagues(updatedLeagues)
       }
     } else {
-      // No playoffs enabled - just mark league as finished
+      // No playoffs enabled - determine champion from league table and mark as finished
+      const sortedPlayers = [...leagueData.players].sort((a, b) => {
+        if (b.points !== a.points) return b.points - a.points
+        if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference
+        return b.goalsFor - a.goalsFor
+      })
+      
+      const champion = sortedPlayers.length > 0 ? sortedPlayers[0].name : undefined
+      
       // Update the saved league without playoffs
       const currentLeague = localStorage.savedLeagues.find(league => 
         league.id === currentLeagueId
@@ -245,6 +254,7 @@ export default function FifaLeague() {
           matches: leagueData.matches,
           manuallyFinished: true,
           isCompleted: true,
+          champion: champion,
         }
         
         const updatedLeagues = localStorage.savedLeagues.map(league => 
@@ -308,6 +318,19 @@ export default function FifaLeague() {
     setPlayoffs(finalPlayoffs)
     leagueData.setTempResults({})
     
+    // Check if final is completed and determine champion
+    const finalMatch = finalPlayoffs.find(match => match.round === "Final")
+    let champion: string | undefined = undefined
+    
+    if (finalMatch && finalMatch.isCompleted && finalMatch.player1Goals !== null && finalMatch.player2Goals !== null && finalMatch.player1 && finalMatch.player2) {
+      // Determine champion from final match
+      if (finalMatch.isDraw && finalMatch.penaltyWinner) {
+        champion = finalMatch.penaltyWinner === "player1" ? finalMatch.player1 : finalMatch.player2
+      } else {
+        champion = finalMatch.player1Goals > finalMatch.player2Goals ? finalMatch.player1 : finalMatch.player2
+      }
+    }
+    
     // Update the saved league
     if (!currentLeagueId) return
     
@@ -321,6 +344,8 @@ export default function FifaLeague() {
         playoffs: finalPlayoffs,
         playersData: leagueData.players,
         matches: leagueData.matches,
+        champion: champion || currentLeague.champion, // Keep existing champion if none determined
+        isCompleted: champion ? true : currentLeague.isCompleted, // Mark as completed if we have a champion
       }
       
       const updatedLeagues = localStorage.savedLeagues.map(league => 
@@ -328,39 +353,6 @@ export default function FifaLeague() {
       )
       localStorage.saveLeagues(updatedLeagues)
     }
-  }
-
-  const editPlayoffMatch = (matchId: string) => {
-    const updatedPlayoffs = playoffs.map((match) => 
-      match.id === matchId ? { ...match, isEditing: true } : match
-    )
-    setPlayoffs(updatedPlayoffs)
-
-    const match = playoffs.find((m) => m.id === matchId)
-    if (match && match.isCompleted) {
-      leagueData.setTempResults((prev: { [key: string]: { player1Goals: string; player2Goals: string; penaltyWinner?: string } }) => ({
-        ...prev,
-        [matchId]: {
-          player1Goals: match.player1Goals?.toString() || "",
-          player2Goals: match.player2Goals?.toString() || "",
-          penaltyWinner: match.penaltyWinner || undefined,
-        },
-      }))
-    }
-  }
-
-  const cancelEditPlayoffMatch = (matchId: string) => {
-    const updatedPlayoffs = playoffs.map((match) => 
-      match.id === matchId ? { ...match, isEditing: false } : match
-    )
-    setPlayoffs(updatedPlayoffs)
-
-    // Clear temp results for this match
-    leagueData.setTempResults((prev: { [key: string]: { player1Goals: string; player2Goals: string; penaltyWinner?: string } }) => {
-      const newResults = { ...prev }
-      delete newResults[matchId]
-      return newResults
-    })
   }
 
   // Render different views
@@ -399,21 +391,29 @@ export default function FifaLeague() {
     return (
       <div className="min-h-screen bg-background">
         <Navigation currentView={currentView} onViewChange={setCurrentView} onCreateNewLeague={createNewLeague} />
-        <LeagueSetup
-          playerCount={playerCount}
-          setPlayerCount={setPlayerCount}
-          selectedPlayers={selectedPlayers}
-          setSelectedPlayers={setSelectedPlayers}
-          availablePlayers={availablePlayers}
-          setAvailablePlayers={setAvailablePlayers}
-          isRoundTrip={isRoundTrip}
-          setIsRoundTrip={setIsRoundTrip}
-          hasPlayoffs={hasPlayoffs}
-          setHasPlayoffs={setHasPlayoffs}
-          playoffTeams={playoffTeams}
-          setPlayoffTeams={setPlayoffTeams}
-          onProceedToTeams={proceedToTeamAssignment}
-        />
+        <div className="container mx-auto px-4 py-8 space-y-8">
+          {/* League Setup */}
+          <LeagueSetup
+            playerCount={playerCount}
+            setPlayerCount={setPlayerCount}
+            selectedPlayers={selectedPlayers}
+            setSelectedPlayers={setSelectedPlayers}
+            availablePlayers={availablePlayers}
+            setAvailablePlayers={setAvailablePlayers}
+            isRoundTrip={isRoundTrip}
+            setIsRoundTrip={setIsRoundTrip}
+            hasPlayoffs={hasPlayoffs}
+            setHasPlayoffs={setHasPlayoffs}
+            playoffTeams={playoffTeams}
+            setPlayoffTeams={setPlayoffTeams}
+            onProceedToTeams={proceedToTeamAssignment}
+          />
+          
+          {/* Global Stats Section - Moved to the end */}
+          {localStorage.savedLeagues.length > 0 && (
+            <GlobalStats leagues={localStorage.savedLeagues} />
+          )}
+        </div>
       </div>
     )
   }
@@ -439,8 +439,6 @@ export default function FifaLeague() {
         onEditMatch={leagueData.editMatch}
         onStartPlayoffs={startPlayoffs}
         onSavePlayoffResults={savePlayoffResults}
-        onEditPlayoffMatch={editPlayoffMatch}
-        onCancelEditPlayoffMatch={cancelEditPlayoffMatch}
         onFinishLeague={finishLeagueAndStartPlayoffs}
       />
     </div>

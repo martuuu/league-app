@@ -38,7 +38,9 @@ export function useLeagueData(): UseLeagueDataReturn {
     setTempResults((prev) => ({
       ...prev,
       [matchId]: {
-        ...prev[matchId],
+        player1Goals: prev[matchId]?.player1Goals || "",
+        player2Goals: prev[matchId]?.player2Goals || "",
+        penaltyWinner: prev[matchId]?.penaltyWinner || undefined,
         [`${player}Goals`]: goals,
       },
     }))
@@ -48,7 +50,8 @@ export function useLeagueData(): UseLeagueDataReturn {
     setTempResults((prev) => ({
       ...prev,
       [matchId]: {
-        ...prev[matchId],
+        player1Goals: prev[matchId]?.player1Goals || "",
+        player2Goals: prev[matchId]?.player2Goals || "",
         penaltyWinner: winner,
       },
     }))
@@ -90,6 +93,7 @@ export function useLeagueData(): UseLeagueDataReturn {
         [matchId]: {
           player1Goals: match.player1Goals?.toString() || "",
           player2Goals: match.player2Goals?.toString() || "",
+          penaltyWinner: match.penaltyWinner || undefined,
         },
       }))
     }

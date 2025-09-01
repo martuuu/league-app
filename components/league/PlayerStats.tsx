@@ -70,8 +70,9 @@ export default function PlayerStats({ stats, className = "" }: PlayerStatsProps)
 
           <div className="bg-muted/50 rounded-lg p-3 text-center">
             <div className="text-2xl font-bold text-primary">
-              {Math.round((stats.matchesPlayed / (stats.matchesPlayed + stats.matchesToPlay)) * 100) || 0}
-              %
+              {stats.matchesPlayed + stats.matchesToPlay > 0 
+                ? Math.round((stats.matchesPlayed / (stats.matchesPlayed + stats.matchesToPlay)) * 100)
+                : 0}%
             </div>
             <div className="text-xs text-muted-foreground">Liga Completada</div>
           </div>

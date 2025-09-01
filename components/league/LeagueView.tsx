@@ -29,8 +29,6 @@ interface LeagueViewProps {
   onEditMatch: (matchId: string) => void
   onStartPlayoffs: () => void
   onSavePlayoffResults: () => void
-  onEditPlayoffMatch: (matchId: string) => void
-  onCancelEditPlayoffMatch: (matchId: string) => void
   onFinishLeague: () => void
 }
 
@@ -52,8 +50,6 @@ export default function LeagueView({
   onEditMatch,
   onStartPlayoffs,
   onSavePlayoffResults,
-  onEditPlayoffMatch,
-  onCancelEditPlayoffMatch,
   onFinishLeague,
 }: LeagueViewProps) {
   const stats = calculateLeagueStats(players, matches)
@@ -182,8 +178,6 @@ export default function LeagueView({
           onTempResultChange={onTempResultChange}
           onPenaltyWinnerSelect={onPenaltyWinnerSelect}
           onSavePlayoffResults={onSavePlayoffResults}
-          onEditPlayoffMatch={onEditPlayoffMatch}
-          onCancelEditPlayoffMatch={onCancelEditPlayoffMatch}
         />
       )}
     </div>

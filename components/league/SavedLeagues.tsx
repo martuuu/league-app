@@ -27,40 +27,62 @@ export default function SavedLeagues({ leagues, onViewLeague, onDeleteLeague }: 
             <p className="text-muted-foreground text-center py-8">No hay ligas creadas aún</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {leagues.map((league) => (
-                <Card key={league.id} className="border-2">
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold mb-2">{league.name}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">
-                      {league.players.length} jugadores • {league.isRoundTrip ? "Ida y Vuelta" : "Una Vuelta"}
-                      {league.playoffStarted && " • Playoffs iniciados"}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {league.players.slice(0, 3).map((player) => (
-                        <Badge key={player} variant="secondary" className="text-xs">
-                          {player}
+              {leagues.map((league) => {
+                const isCompleted = league.isCompleted || !!league.champion
+                const status = isCompleted ? "Completada" : "Activa"
+                const statusVariant = isCompleted ? "default" : "secondary"
+                
+                return (
+                  <Card key={league.id} className="border-2">
+                    <CardContent className="p-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="font-semibold">{league.name}</h3>
+                        <Badge variant={statusVariant} className="text-xs">
+                          {status}
                         </Badge>
-                      ))}
-                      {league.players.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{league.players.length - 3}
-                        </Badge>
+                      </div>
+                      
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {league.players.length} jugadores • {league.isRoundTrip ? "Ida y Vuelta" : "Una Vuelta"}
+                        {league.playoffStarted && " • Playoffs iniciados"}
+                      </p>
+                      
+                      {league.champion && (
+                        <div className="flex items-center gap-1 mb-2">
+                          <Trophy className="h-4 w-4 text-yellow-500" />
+                          <span className="text-sm font-medium text-yellow-700">
+                            Campeón: {league.champion}
+                          </span>
+                        </div>
                       )}
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-3">
-                      Creada: {league.createdAt.toLocaleDateString()}
-                    </p>
-                    <div className="flex gap-2">
-                      <Button size="sm" className="flex-1" onClick={() => onViewLeague(league)}>
-                        Ver Liga
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => onDeleteLeague(league.id)} className="px-3">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                      
+                      <div className="flex flex-wrap gap-1 mb-3">
+                        {league.players.slice(0, 3).map((player) => (
+                          <Badge key={player} variant="secondary" className="text-xs">
+                            {player}
+                          </Badge>
+                        ))}
+                        {league.players.length > 3 && (
+                          <Badge variant="secondary" className="text-xs">
+                            +{league.players.length - 3}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        Creada: {league.createdAt.toLocaleDateString()}
+                      </p>
+                      <div className="flex gap-2">
+                        <Button size="sm" className="flex-1" onClick={() => onViewLeague(league)}>
+                          Ver Liga
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => onDeleteLeague(league.id)} className="px-3">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })}
             </div>
           )}
         </CardContent>

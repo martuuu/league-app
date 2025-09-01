@@ -39,6 +39,7 @@ export interface SavedLeague {
   playoffs: Match[]
   playoffStarted?: boolean // Nueva propiedad para controlar si los playoffs han comenzado
   manuallyFinished?: boolean // Nueva propiedad para indicar si la liga fue finalizada manualmente
+  champion?: string // Nueva propiedad para el campeón de la liga
 }
 
 export interface LeagueStats {
