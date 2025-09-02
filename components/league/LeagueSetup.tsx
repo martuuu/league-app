@@ -234,9 +234,9 @@ export default function LeagueSetup({
           </div>
 
           <div className="flex flex-col items-end gap-2">
-            {(playerCount < 2 || playerCount > 20 || selectedPlayers.length < playerCount) && (
+            {((playerCount !== 0 && (playerCount < 2 || playerCount > 20)) || selectedPlayers.length < playerCount) && (
               <p className="text-xs text-red-600 text-right">
-                {playerCount < 2 || playerCount > 20 
+                {playerCount !== 0 && (playerCount < 2 || playerCount > 20)
                   ? "Debe tener entre 2 y 20 jugadores" 
                   : `Selecciona ${playerCount - selectedPlayers.length} jugador${playerCount - selectedPlayers.length > 1 ? 'es' : ''} más`}
               </p>
