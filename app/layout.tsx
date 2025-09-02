@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: 'FIFA League App',
   description: 'Organizador de ligas de fútbol para amigos',
   generator: 'Next.js',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
 }
 
 export default function RootLayout({

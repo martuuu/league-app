@@ -124,3 +124,31 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Disable automatic zoom on input focus for mobile devices */
+@media screen and (max-width: 768px) {
+  input[type="number"],
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Alternative approach: completely disable zoom */
+@viewport {
+  user-zoom: fixed;
+  zoom: 1.0;
+}
+
+/* For webkit browsers (Safari, Chrome on iOS) */
+input[type="number"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+  font-size: max(16px, 1rem) !important;
+}

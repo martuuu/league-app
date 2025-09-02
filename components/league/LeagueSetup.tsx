@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { PREDEFINED_PLAYERS } from "@/lib/types"
-import { Plus, Trash2, Trophy, Users } from "lucide-react"
+import { Plus, Trash2, Users } from "lucide-react"
 import { useState } from "react"
 
 interface LeagueSetupProps {
