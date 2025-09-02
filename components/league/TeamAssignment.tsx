@@ -64,7 +64,7 @@ export default function TeamAssignment({
             ))}
           </div>
 
-          <div className="flex justify-end gap-2 pt-4 border-t border-border bg-background sticky bottom-0">
+          <div className="flex justify-end gap-2 pt-4 border-t border-border bottom-0">
             <Button variant="outline" onClick={onBackToSetup}>
               Volver
             </Button>

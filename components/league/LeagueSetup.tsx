@@ -80,8 +80,19 @@ export default function LeagueSetup({
               min="2"
               max="20"
               value={playerCount}
-              onChange={(e) => setPlayerCount(Number.parseInt(e.target.value) || 2)}
+              onChange={(e) => {
+                const value = e.target.value
+                if (value === "") {
+                  setPlayerCount(2) // Set to minimum when empty
+                } else {
+                  const numValue = Number.parseInt(value)
+                  if (!isNaN(numValue)) {
+                    setPlayerCount(Math.max(2, Math.min(20, numValue)))
+                  }
+                }
+              }}
               className="w-full"
+              style={{ fontSize: '16px' }}
             />
             <p className="text-xs text-muted-foreground mt-2">
               {(() => {
