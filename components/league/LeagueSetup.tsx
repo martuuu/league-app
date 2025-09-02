@@ -79,16 +79,25 @@ export default function LeagueSetup({
               type="number"
               min="2"
               max="20"
-              value={playerCount}
+              value={playerCount === 0 ? "" : playerCount}
               onChange={(e) => {
                 const value = e.target.value
                 if (value === "") {
-                  setPlayerCount(2) // Set to minimum when empty
+                  setPlayerCount(0) // Allow empty temporarily
                 } else {
                   const numValue = Number.parseInt(value)
                   if (!isNaN(numValue)) {
-                    setPlayerCount(Math.max(2, Math.min(20, numValue)))
+                    setPlayerCount(numValue) // Don't restrict while typing
                   }
+                }
+              }}
+              onBlur={(e) => {
+                // Only validate when user leaves the input
+                const value = e.target.value
+                if (value === "" || Number.parseInt(value) < 2) {
+                  setPlayerCount(2)
+                } else if (Number.parseInt(value) > 20) {
+                  setPlayerCount(20)
                 }
               }}
               className="w-full"
@@ -96,6 +105,10 @@ export default function LeagueSetup({
             />
             <p className="text-xs text-muted-foreground mt-2">
               {(() => {
+                if (playerCount === 0) {
+                  return "Ingresa la cantidad de jugadores para ver el estimado"
+                }
+                
                 const regularMatches = ((playerCount * (playerCount - 1)) / 2) * (isRoundTrip ? 2 : 1)
                 let playoffMatches = 0
                 
@@ -220,8 +233,18 @@ export default function LeagueSetup({
             </div>
           </div>
 
-          <div className="flex justify-end">
-            <Button onClick={onProceedToTeams}>
+          <div className="flex flex-col items-end gap-2">
+            {(playerCount < 2 || playerCount > 20 || selectedPlayers.length < playerCount) && (
+              <p className="text-xs text-red-600 text-right">
+                {playerCount < 2 || playerCount > 20 
+                  ? "Debe tener entre 2 y 20 jugadores" 
+                  : `Selecciona ${playerCount - selectedPlayers.length} jugador${playerCount - selectedPlayers.length > 1 ? 'es' : ''} más`}
+              </p>
+            )}
+            <Button 
+              onClick={onProceedToTeams}
+              disabled={playerCount < 2 || playerCount > 20 || selectedPlayers.length < playerCount}
+            >
               Continuar
             </Button>
           </div>
