@@ -103,9 +103,9 @@ export default function MatchSchedule({
                       type="number"
                       min="0"
                       placeholder="0"
-                      value={tempResults[match.id]?.player1Goals || "0"}
+                      value={tempResults[match.id]?.player1Goals || ""}
                       onChange={(e) => onTempResultChange(match.id, "player1", e.target.value)}
-                      className="w-10 h-6 text-center text-xs border-2 border-primary/20 focus:border-primary px-1"
+                      className="w-10 h-6 text-center text-xs border-2 border-primary/20 focus:border-primary px-1 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 md:[&::-webkit-outer-spin-button]:hover:opacity-100 md:[&::-webkit-inner-spin-button]:hover:opacity-100 [&::-webkit-outer-spin-button]:md:opacity-0 [&::-webkit-inner-spin-button]:md:opacity-0"
                       disabled={match.isCompleted && !match.isEditing || leagueFinished}
                     />
                     <span className="text-muted-foreground text-xs">-</span>
@@ -113,9 +113,9 @@ export default function MatchSchedule({
                       type="number"
                       min="0"
                       placeholder="0"
-                      value={tempResults[match.id]?.player2Goals || "0"}
+                      value={tempResults[match.id]?.player2Goals || ""}
                       onChange={(e) => onTempResultChange(match.id, "player2", e.target.value)}
-                      className="w-10 h-6 text-center text-xs border-2 border-primary/20 focus:border-primary px-1"
+                      className="w-10 h-6 text-center text-xs border-2 border-primary/20 focus:border-primary px-1 [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 md:[&::-webkit-outer-spin-button]:hover:opacity-100 md:[&::-webkit-inner-spin-button]:hover:opacity-100 [&::-webkit-outer-spin-button]:md:opacity-0 [&::-webkit-inner-spin-button]:md:opacity-0"
                       disabled={match.isCompleted && !match.isEditing || leagueFinished}
                     />
                   </div>

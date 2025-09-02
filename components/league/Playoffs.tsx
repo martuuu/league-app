@@ -90,7 +90,7 @@ export default function Playoffs({
                     type="number"
                     value={tempResult?.player1Goals || ""}
                     onChange={(e) => onTempResultChange(match.id, "player1", e.target.value)}
-                    className="w-12 h-8 text-center border rounded"
+                    className="w-12 h-8 text-center border rounded [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 md:[&::-webkit-outer-spin-button]:hover:opacity-100 md:[&::-webkit-inner-spin-button]:hover:opacity-100 [&::-webkit-outer-spin-button]:md:opacity-0 [&::-webkit-inner-spin-button]:md:opacity-0"
                     min="0"
                     placeholder="0"
                   />
@@ -99,7 +99,7 @@ export default function Playoffs({
                     type="number"
                     value={tempResult?.player2Goals || ""}
                     onChange={(e) => onTempResultChange(match.id, "player2", e.target.value)}
-                    className="w-12 h-8 text-center border rounded"
+                    className="w-12 h-8 text-center border rounded [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-inner-spin-button]:opacity-100 md:[&::-webkit-outer-spin-button]:hover:opacity-100 md:[&::-webkit-inner-spin-button]:hover:opacity-100 [&::-webkit-outer-spin-button]:md:opacity-0 [&::-webkit-inner-spin-button]:md:opacity-0"
                     min="0"
                     placeholder="0"
                   />

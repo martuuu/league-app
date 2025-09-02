@@ -68,10 +68,9 @@ export default function LeagueSetup({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary flex items-center justify-center gap-2">
-            <Trophy className="h-8 w-8" />
-            Nueva Liga
+            Nuevo Torneo
           </CardTitle>
-          <p className="text-muted-foreground">Configura tu liga con amigos</p>
+          <p className="text-muted-foreground">Configura tu liga personalizada</p>
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
@@ -85,9 +84,36 @@ export default function LeagueSetup({
               className="w-full"
             />
             <p className="text-xs text-muted-foreground mt-2">
-              Tiempo estimado total:{" "}
-              {Math.round((((playerCount * (playerCount - 1)) / 2) * (isRoundTrip ? 2 : 1) * 20) / 60)} horas (
-              {((playerCount * (playerCount - 1)) / 2) * (isRoundTrip ? 2 : 1)} partidos × 20 min c/u)
+              {(() => {
+                const regularMatches = ((playerCount * (playerCount - 1)) / 2) * (isRoundTrip ? 2 : 1)
+                let playoffMatches = 0
+                
+                if (hasPlayoffs) {
+                  if (playoffTeams === 2) {
+                    playoffMatches = 1 // Solo final
+                  } else if (playoffTeams === 4) {
+                    playoffMatches = 3 // 2 semifinales + 1 final
+                  } else if (playoffTeams === 6) {
+                    playoffMatches = 5 // 2 cuartos (4° vs 5°, 3° vs 6°) + 2 semifinales + 1 final
+                  } else if (playoffTeams === 8) {
+                    playoffMatches = 7 // 4 cuartos + 2 semifinales + 1 final
+                  }
+                }
+                
+                const totalMatches = regularMatches + playoffMatches
+                const totalHours = Math.round((totalMatches * 20) / 60)
+                
+                return (
+                  <>
+                    Tiempo estimado total: {totalHours} horas ({totalMatches} partidos × 20 min c/u)
+                    {hasPlayoffs && playoffMatches > 0 && (
+                      <span className="block text-xs text-blue-600 mt-1">
+                        Incluye {playoffMatches} partido{playoffMatches > 1 ? 's' : ''} de playoffs
+                      </span>
+                    )}
+                  </>
+                )
+              })()}
             </p>
           </div>
 
