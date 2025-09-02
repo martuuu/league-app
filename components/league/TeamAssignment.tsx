@@ -28,7 +28,7 @@ export default function TeamAssignment({
   onCreateLeague,
 }: TeamAssignmentProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-8">
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold text-primary flex items-center justify-center gap-2">
@@ -37,31 +37,34 @@ export default function TeamAssignment({
           </CardTitle>
           <p className="text-muted-foreground">Asigna un equipo a cada jugador</p>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {selectedPlayers.map((player) => (
-            <div key={player} className="flex items-center gap-4 p-3 border border-border rounded-lg">
-              <div className="font-medium min-w-[120px]">{player}</div>
-              <Input
-                placeholder="Nombre del equipo"
-                value={playerTeams[player] || ""}
-                onChange={(e) => onTeamChange(player, e.target.value)}
-                className="flex-1"
-              />
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  id={`lock-${player}`}
-                  checked={lockedPlayers.includes(player)}
-                  onCheckedChange={() => onTogglePlayerLock(player)}
-                  className="border-2 border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+        <CardContent className="space-y-4 pb-6">
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+            {selectedPlayers.map((player) => (
+              <div key={player} className="flex items-center gap-4 p-3 border border-border rounded-lg">
+                <div className="font-medium min-w-[120px]">{player}</div>
+                <Input
+                  placeholder="Nombre del equipo"
+                  value={playerTeams[player] || ""}
+                  onChange={(e) => onTeamChange(player, e.target.value)}
+                  className="flex-1"
+                  style={{ fontSize: '16px' }}
                 />
-                <label htmlFor={`lock-${player}`} className="text-xs text-muted-foreground">
-                  Bloquear
-                </label>
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id={`lock-${player}`}
+                    checked={lockedPlayers.includes(player)}
+                    onCheckedChange={() => onTogglePlayerLock(player)}
+                    className="border-2 border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                  />
+                  <label htmlFor={`lock-${player}`} className="text-xs text-muted-foreground">
+                    Bloquear
+                  </label>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
-          <div className="flex justify-end gap-2 pt-4">
+          <div className="flex justify-end gap-2 pt-4 border-t border-border bg-background sticky bottom-0">
             <Button variant="outline" onClick={onBackToSetup}>
               Volver
             </Button>
