@@ -200,7 +200,8 @@ export default function LeagueSetup({
                 value={newPlayerName}
                 onChange={(e) => setNewPlayerName(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && addCustomPlayer()}
-                className="text-sm"
+                className="text-base"
+                style={{ fontSize: '16px' }}
               />
               <Button onClick={addCustomPlayer} variant="outline" size="sm">
                 <Plus className="h-4 w-4" />
