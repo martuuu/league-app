@@ -38,7 +38,7 @@ export default function TeamAssignment({
           <p className="text-muted-foreground">Asigna un equipo a cada jugador</p>
         </CardHeader>
         <CardContent className="space-y-4 pb-6">
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+          <div className="space-y-4">
             {selectedPlayers.map((player) => (
               <div key={player} className="flex items-center gap-4 p-3 border border-border rounded-lg">
                 <div className="font-medium min-w-[120px]">{player}</div>
